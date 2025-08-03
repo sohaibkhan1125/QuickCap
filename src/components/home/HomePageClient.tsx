@@ -155,13 +155,13 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         Share:
                         <Button variant="ghost" size="icon" asChild>
-                           <Link href={`https://twitter.com/intent/tweet?text=I%20just%20generated%20captions%20for%20my%20video%20with%20CaptionWave!&url=${'https://captionwave.com'}`} target="_blank"><Twitter className="h-5 w-5" /></Link>
+                           <Link href={`https://twitter.com/intent/tweet?text=I%20just%20generated%20captions%20for%20my%20video%20with%20QuickCap!&url=${'https://quickcap.com'}`} target="_blank"><Twitter className="h-5 w-5" /></Link>
                         </Button>
                          <Button variant="ghost" size="icon" asChild>
-                           <Link href={`https://www.facebook.com/sharer/sharer.php?u=${'https://captionwave.com'}`} target="_blank"><Facebook className="h-5 w-5" /></Link>
+                           <Link href={`https://www.facebook.com/sharer/sharer.php?u=${'https://quickcap.com'}`} target="_blank"><Facebook className="h-5 w-5" /></Link>
                         </Button>
                          <Button variant="ghost" size="icon" asChild>
-                           <Link href={`https://www.linkedin.com/shareArticle?mini=true&url=${'https://captionwave.com'}&title=CaptionWave`} target="_blank"><Linkedin className="h-5 w-5" /></Link>
+                           <Link href={`https://www.linkedin.com/shareArticle?mini=true&url=${'https://quickcap.com'}&title=QuickCap`} target="_blank"><Linkedin className="h-5 w-5" /></Link>
                         </Button>
                      </div>
                 </CardFooter>

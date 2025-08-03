@@ -12,7 +12,7 @@ Today, we are showcasing the power of AI.
 
 3
 00:00:07,111 --> 00:00:09,888
-This is CaptionWave, automatically generating subtitles for you.
+This is QuickCap, automatically generating subtitles for you.
 
 4
 00:00:10,500 --> 00:00:12,900

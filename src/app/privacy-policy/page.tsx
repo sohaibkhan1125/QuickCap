@@ -10,7 +10,7 @@ export default function PrivacyPolicyPage() {
             <div>
               <h2 className="font-headline text-2xl font-bold mt-8 mb-2">1. Introduction</h2>
               <p>
-                Welcome to CaptionWave. We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service.
+                Welcome to QuickCap. We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service.
               </p>
             </div>
 

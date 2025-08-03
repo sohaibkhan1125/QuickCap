@@ -17,7 +17,7 @@ export default function AboutPage() {
             <div className="flex flex-col justify-center">
                 <h2 className="font-headline text-3xl font-bold">Our Story</h2>
                 <p className="mt-4 text-muted-foreground">
-                CaptionWave started with a simple idea: what if generating accurate captions for videos could be effortless? In today's digital world, video is how we connect, learn, and share. However, a vast amount of video content remains inaccessible to the deaf and hard-of-hearing community, and many viewers watch on mute.
+                QuickCap started with a simple idea: what if generating accurate captions for videos could be effortless? In today's digital world, video is how we connect, learn, and share. However, a vast amount of video content remains inaccessible to the deaf and hard-of-hearing community, and many viewers watch on mute.
                 </p>
                 <p className="mt-4 text-muted-foreground">
                 Leveraging the latest advancements in artificial intelligence, we've built a platform that is not only powerful but also incredibly easy to use.
@@ -31,7 +31,7 @@ export default function AboutPage() {
                 Our AI gets to work, automatically detecting the language and transcribing audio with high accuracy. Our goal is to empower creators, marketers, educators, and individuals to enhance their video content, reach a wider audience, and create a more inclusive viewing experience.
                 </p>
                  <p className="mt-4 text-muted-foreground">
-                We believe in the power of technology to break down barriers, and with CaptionWave, we're taking a step towards a more accessible future.
+                We believe in the power of technology to break down barriers, and with QuickCap, we're taking a step towards a more accessible future.
                 </p>
             </div>
             <div data-ai-hint="technology abstract" className="order-first md:order-last">
