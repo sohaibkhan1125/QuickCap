@@ -37,7 +37,7 @@ export async function generateCaptionsAction(input: AutoCaptionInput) {
     return {
       success: true,
       data: {
-        language: result.languageCode,
+        language: result.language,
         srt: toSrt(result.captions),
         txt: toTxt(result.captions),
       },
