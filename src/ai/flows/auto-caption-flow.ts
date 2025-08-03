@@ -10,6 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z, Part} from 'genkit';
+import { openAI } from 'genkitx-openai';
 
 const AutoCaptionInputSchema = z.object({
   videoDataUri: z
@@ -39,6 +40,7 @@ const autoCaptionFlow = ai.defineFlow(
   async (input) => {
     
     const transcription = await ai.transcribe({
+        model: openAI('whisper-1'),
         media: {
             url: input.videoDataUri
         },
