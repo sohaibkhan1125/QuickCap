@@ -20,4 +20,5 @@ const nextConfig: NextConfig = {
   },
 };
 
+// A no-op change to force a server restart
 export default nextConfig;
