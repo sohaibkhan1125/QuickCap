@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { WavesIcon, Menu } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
-  ClerkProvider,
   SignInButton,
   SignUpButton,
   SignedIn,
