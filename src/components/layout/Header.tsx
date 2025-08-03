@@ -37,15 +37,15 @@ export function Header() {
       </nav>
       <div className="ml-auto md:ml-4 flex gap-2 items-center">
         <SignedOut>
-          <SignInButton>
+          <SignInButton mode="modal" afterSignInUrl="/">
             <Button variant="outline" className="hidden md:inline-flex">Log In</Button>
           </SignInButton>
-          <SignUpButton>
+          <SignUpButton mode="modal" afterSignUpUrl="/">
             <Button className="hidden md:inline-flex">Sign Up</Button>
           </SignUpButton>
         </SignedOut>
         <SignedIn>
-          <UserButton />
+          <UserButton afterSignOutUrl="/" />
         </SignedIn>
         
         <Sheet>
@@ -71,10 +71,10 @@ export function Header() {
               </Link>
               <div className="flex flex-col gap-2 mt-4">
                  <SignedOut>
-                    <SignInButton>
+                    <SignInButton mode="modal" afterSignInUrl="/">
                         <Button variant="outline">Log In</Button>
                     </SignInButton>
-                    <SignUpButton>
+                    <SignUpButton mode="modal" afterSignUpUrl="/">
                         <Button>Sign Up</Button>
                     </SignUpButton>
                  </SignedOut>
