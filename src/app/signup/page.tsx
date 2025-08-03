@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCreateUserWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
@@ -31,10 +31,7 @@ export default function SignupPage() {
 
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
-        const result = await createUserWithEmailAndPassword(email, password);
-        if (result) {
-            router.push('/');
-        }
+        await createUserWithEmailAndPassword(email, password);
     };
     
     const handleGoogleSignIn = async () => {
@@ -51,13 +48,20 @@ export default function SignupPage() {
         }
     };
     
-    if (user || googleUser) {
-        router.push('/');
-        return null;
-    }
+    const loggedInUser = user || googleUser;
+
+    useEffect(() => {
+        if (loggedInUser) {
+            router.push('/');
+        }
+    }, [loggedInUser, router]);
 
     const currentError = error || googleError;
     const isLoading = loading || googleLoading;
+
+    if (loggedInUser) {
+        return null;
+    }
 
     return (
         <div className="flex items-center justify-center py-12 md:py-20 lg:py-24">
