@@ -235,11 +235,10 @@ export function HomePageClient() {
   const { toast } = useToast();
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
     if (status === 'processing') {
       // Custom progress simulation
-      let progress = 0;
-      setProgress(progress);
+      let currentProgress = 0;
+      setProgress(currentProgress);
 
       const timers = [
         setTimeout(() => setProgress(15), 500), // Initial delay
@@ -249,7 +248,13 @@ export function HomePageClient() {
 
       // Indefinite progress after reaching 85%
       const finalProgressInterval = setInterval(() => {
-        setProgress(p => Math.min(95, p + 1));
+        setProgress(p => {
+          if (p >= 95) {
+            clearInterval(finalProgressInterval);
+            return p;
+          }
+          return p + 1;
+        });
       }, 1000);
 
       return () => {
@@ -265,6 +270,8 @@ export function HomePageClient() {
 
     setFileName(file.name);
     setStatus('processing');
+    setResult(null);
+    setError(null);
     setProgress(0);
 
     const reader = new FileReader();
