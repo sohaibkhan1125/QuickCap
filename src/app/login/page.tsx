@@ -50,7 +50,9 @@ export default function LoginPage() {
       });
       router.push('/');
     } catch (error: any) {
-      setError(error.message);
+      if (error.code !== 'auth/popup-closed-by-user') {
+        setError(error.message);
+      }
     } finally {
       setGoogleLoading(false);
     }
