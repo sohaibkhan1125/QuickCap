@@ -1,42 +1,45 @@
 'use server';
 
-import { autoDetectLanguage, AutoDetectLanguageInput } from '@/ai/flows/auto-detect-language';
+import { autoCaption, AutoCaptionInput } from '@/ai/flows/auto-caption-flow';
 
-const MOCK_SRT_CAPTIONS = `1
-00:00:01,234 --> 00:00:03,456
-Hello, and welcome to our demonstration.
+function srtTimestamp(seconds: number) {
+    const date = new Date(0);
+    date.setSeconds(seconds);
+    const time = date.toISOString().substr(11, 12);
+    return time.replace('.', ',');
+}
 
-2
-00:00:04,567 --> 00:00:06,789
-Today, we are showcasing the power of AI.
+function toSrt(captions: string): string {
+    const lines = captions.split('\n').filter(line => line.trim() !== '');
+    let srt = '';
+    let startTime = 0;
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const duration = Math.max(2, line.length / 10); // Simple duration heuristic
+        const endTime = startTime + duration;
+        srt += `${i + 1}\n`;
+        srt += `${srtTimestamp(startTime)} --> ${srtTimestamp(endTime)}\n`;
+        srt += `${line}\n\n`;
+        startTime = endTime;
+    }
+    return srt;
+}
 
-3
-00:00:07,111 --> 00:00:09,888
-This is QuickCap, automatically generating subtitles for you.
+function toTxt(captions: string): string {
+    return captions;
+}
 
-4
-00:00:10,500 --> 00:00:12,900
-We hope you enjoy the experience.
-`;
 
-const MOCK_TXT_CAPTIONS = MOCK_SRT_CAPTIONS.replace(/(\d+\n\d{2}:\d{2}:\d{2},\d{3} --> \d{2}:\d{2}:\d{2},\d{3}\n)/g, '').replace(/\n\n/g, '\n').trim();
-
-export async function generateCaptionsAction(input: AutoDetectLanguageInput) {
+export async function generateCaptionsAction(input: AutoCaptionInput) {
   try {
-    // Simulate initial processing time
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    const result = await autoDetectLanguage(input);
-
-    // Simulate caption generation time after language detection
-    await new Promise(resolve => setTimeout(resolve, 2500));
+    const result = await autoCaption(input);
 
     return {
       success: true,
       data: {
         language: result.languageCode,
-        srt: MOCK_SRT_CAPTIONS,
-        txt: MOCK_TXT_CAPTIONS,
+        srt: toSrt(result.captions),
+        txt: toTxt(result.captions),
       },
     };
   } catch (error) {

@@ -2,11 +2,12 @@
 
 import { useState, useCallback, useMemo, ChangeEvent, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { UploadCloud, FileVideo, Copy, Download, Twitter, Linkedin, Check, AlertCircle, RefreshCw, Facebook } from 'lucide-react';
+import { UploadCloud, FileVideo, Copy, Download, Twitter, Linkedin, Check, AlertCircle, RefreshCw, Facebook, Wand2 } from 'lucide-react';
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { generateCaptionsAction } from '@/app/actions';
+import { enhanceCaptions, EnhanceCaptionsInput } from '@/ai/flows/enhance-captions-flow';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from '@/components/ui/badge';
@@ -88,6 +89,7 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
     const { toast } = useToast();
     const [srtCaptions, setSrtCaptions] = useState(result.srt);
     const [txtCaptions, setTxtCaptions] = useState(result.txt);
+    const [isEnhancing, setIsEnhancing] = useState(false);
 
     const handleCopy = (text: string, format: string) => {
         navigator.clipboard.writeText(text);
@@ -108,6 +110,35 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     };
+
+    const handleEnhanceCaptions = async () => {
+        setIsEnhancing(true);
+        try {
+            const currentTab = document.querySelector('[data-state="active"]')?.getAttribute('data-value') || 'srt';
+            const captionsToEnhance = currentTab === 'srt' ? srtCaptions : txtCaptions;
+
+            const { enhancedCaptions } = await enhanceCaptions({ captions: captionsToEnhance });
+
+            if (currentTab === 'srt') {
+                setSrtCaptions(enhancedCaptions);
+            } else {
+                setTxtCaptions(enhancedCaptions);
+            }
+            toast({
+                title: "Captions Enhanced!",
+                description: "The AI has improved your captions.",
+            });
+        } catch (error) {
+            toast({
+                title: "Enhancement Failed",
+                description: "Could not enhance captions. Please try again.",
+                variant: "destructive",
+            });
+        } finally {
+            setIsEnhancing(false);
+        }
+    };
+
 
     return (
         <div className="w-full max-w-3xl px-4 py-12">
@@ -149,6 +180,12 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
                             </div>
                         </TabsContent>
                     </Tabs>
+                     <div className="mt-4 flex justify-end">
+                        <Button onClick={handleEnhanceCaptions} disabled={isEnhancing}>
+                            <Wand2 className="mr-2 h-4 w-4" />
+                            {isEnhancing ? 'Enhancing...' : 'Enhance with AI'}
+                        </Button>
+                    </div>
                 </CardContent>
                 <CardFooter className="flex-col sm:flex-row gap-4 items-center justify-between">
                      <Button onClick={onReset}><RefreshCw className="mr-2 h-4 w-4" />Generate Another</Button>
@@ -200,17 +237,26 @@ export function HomePageClient() {
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (status === 'processing') {
-      interval = setInterval(() => {
-        setProgress(prev => {
-          if (prev >= 95) {
-            clearInterval(interval);
-            return 95;
-          }
-          return prev + 1;
-        });
-      }, 100);
+      // Custom progress simulation
+      let progress = 0;
+      setProgress(progress);
+
+      const timers = [
+        setTimeout(() => setProgress(15), 500), // Initial delay
+        setTimeout(() => setProgress(45), 2000), // Uploading/analyzing
+        setTimeout(() => setProgress(85), 8000), // Caption generation (longer step)
+      ];
+
+      // Indefinite progress after reaching 85%
+      const finalProgressInterval = setInterval(() => {
+        setProgress(p => Math.min(95, p + 1));
+      }, 1000);
+
+      return () => {
+        timers.forEach(clearTimeout);
+        clearInterval(finalProgressInterval);
+      };
     }
-    return () => clearInterval(interval);
   }, [status]);
 
 
