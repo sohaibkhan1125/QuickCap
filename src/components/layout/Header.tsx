@@ -2,18 +2,28 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { WavesIcon, Menu } from 'lucide-react';
+import { WavesIcon, Menu, LogOut } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
+import { signOut } from 'firebase/auth';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs'
-
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export function Header() {
+  const [user] = useAuthState(auth);
+
+  const handleLogout = async () => {
+    await signOut(auth);
+  };
+
   return (
     <header className="px-4 lg:px-6 h-16 flex items-center bg-background/80 backdrop-blur-sm sticky top-0 z-50 border-b">
       <Link href="/" className="flex items-center justify-center" prefetch={false}>
@@ -35,17 +45,33 @@ export function Header() {
         </Link>
       </nav>
       <div className="ml-auto md:ml-4 flex gap-2 items-center">
-        <SignedOut>
-          <SignInButton mode="modal" afterSignInUrl="/">
-            <Button variant="outline" className="hidden md:inline-flex">Log In</Button>
-          </SignInButton>
-          <SignUpButton mode="modal" afterSignUpUrl="/">
-            <Button className="hidden md:inline-flex">Sign Up</Button>
-          </SignUpButton>
-        </SignedOut>
-        <SignedIn>
-          <UserButton afterSignOutUrl="/" />
-        </SignedIn>
+        {user ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Avatar className="cursor-pointer">
+                <AvatarImage src={user.photoURL || undefined} />
+                <AvatarFallback>{user.email?.[0].toUpperCase()}</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <>
+            <Button variant="outline" className="hidden md:inline-flex" asChild>
+              <Link href="/login">Log In</Link>
+            </Button>
+            <Button className="hidden md:inline-flex" asChild>
+              <Link href="/signup">Sign Up</Link>
+            </Button>
+          </>
+        )}
         
         <Sheet>
           <SheetTrigger asChild>
@@ -69,14 +95,16 @@ export function Header() {
                 Privacy Policy
               </Link>
               <div className="flex flex-col gap-2 mt-4">
-                 <SignedOut>
-                    <SignInButton mode="modal" afterSignInUrl="/">
-                        <Button variant="outline" className="w-full">Log In</Button>
-                    </SignInButton>
-                    <SignUpButton mode="modal" afterSignUpUrl="/">
-                        <Button className="w-full">Sign Up</Button>
-                    </SignUpButton>
-                 </SignedOut>
+                {!user && (
+                    <>
+                     <Button variant="outline" className="w-full" asChild>
+                        <Link href="/login">Log In</Link>
+                     </Button>
+                     <Button className="w-full" asChild>
+                        <Link href="/signup">Sign Up</Link>
+                     </Button>
+                    </>
+                )}
               </div>
             </div>
           </SheetContent>
