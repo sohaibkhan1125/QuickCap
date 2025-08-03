@@ -9,8 +9,7 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
-import { defineMedia, Part } from 'genkit/media';
+import {z, Part} from 'genkit';
 
 const AutoCaptionInputSchema = z.object({
   videoDataUri: z
@@ -40,7 +39,9 @@ const autoCaptionFlow = ai.defineFlow(
   async (input) => {
     
     const transcription = await ai.transcribe({
-        media: defineMedia(Part.fromData(input.videoDataUri)),
+        media: {
+            url: input.videoDataUri
+        },
         format: 'text'
     });
     
