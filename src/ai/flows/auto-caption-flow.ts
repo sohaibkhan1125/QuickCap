@@ -8,11 +8,8 @@
  * - AutoCaptionOutput - The return type for the auto-caption function.
  */
 
-import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import OpenAI from 'openai';
-import { openAI } from 'genkitx-openai';
-
 
 const AutoCaptionInputSchema = z.object({
   videoDataUri: z
@@ -23,47 +20,34 @@ const AutoCaptionInputSchema = z.object({
 });
 export type AutoCaptionInput = z.infer<typeof AutoCaptionInputSchema>;
 
-const AutoCaptionOutputSchema = z.object({
-  captions: z.string().describe('The generated captions for the video.'),
-  language: z.string().describe('The detected language of the video audio.'),
-});
-export type AutoCaptionOutput = z.infer<typeof AutoCaptionOutputSchema>;
+export type AutoCaptionOutput = {
+  captions: string;
+  language: string;
+};
+
+// Helper to convert data URI to a File-like object for OpenAI API
+async function dataUriToStream(dataUri: string) {
+    const response = await fetch(dataUri);
+    if (!response.ok) {
+        throw new Error('Failed to fetch data URI');
+    }
+    const blob = await response.blob();
+    return new File([blob], "video.mp4", { type: blob.type });
+}
 
 export async function autoCaption(input: AutoCaptionInput): Promise<AutoCaptionOutput> {
-  return autoCaptionFlow(input);
-}
+  const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+  });
+  
+  const videoFile = await dataUriToStream(input.videoDataUri);
 
-// Helper to convert data URI to a File object for OpenAI API
-async function dataUriToStream(dataUri: string): Promise<any> {
-    const response = await fetch(dataUri);
-    const blob = await response.blob();
-    const arrayBuffer = await blob.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    return {
-        file: buffer,
-        name: 'video.mp4',
-    };
-}
-
-
-const autoCaptionFlow = ai.defineFlow(
-  {
-    name: 'autoCaptionFlow',
-    inputSchema: AutoCaptionInputSchema,
-    outputSchema: AutoCaptionOutputSchema,
-  },
-  async (input) => {
-    const openai = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY,
-    });
-    
-    const audioStream = await dataUriToStream(input.videoDataUri);
-
+  try {
     const transcription = await openai.audio.transcriptions.create({
-        file: audioStream,
+        file: videoFile,
         model: 'whisper-1',
     });
-
+  
     // Note: OpenAI's transcription API doesn't explicitly return the language code,
     // but it auto-detects it. For simplicity, we'll mark it as 'auto-detected'.
     // A more advanced implementation could use another call to identify the language.
@@ -71,5 +55,8 @@ const autoCaptionFlow = ai.defineFlow(
       captions: transcription.text,
       language: 'auto-detected',
     };
+  } catch (error) {
+    console.error("OpenAI API Error:", error);
+    throw new Error("The AI model failed to transcribe the video. This can happen with unsupported audio formats or network issues.");
   }
-);
+}

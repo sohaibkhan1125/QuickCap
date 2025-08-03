@@ -42,11 +42,11 @@ export async function generateCaptionsAction(input: AutoCaptionInput) {
         txt: toTxt(result.captions),
       },
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error generating captions:', error);
     return {
       success: false,
-      error: 'Failed to process the video. The AI model might not support the audio characteristics. Please try a different video.',
+      error: error.message || 'Failed to process the video. The AI model might not support the audio characteristics. Please try a different video.',
     };
   }
 }
