@@ -72,10 +72,10 @@ export function Header() {
               <div className="flex flex-col gap-2 mt-4">
                  <SignedOut>
                     <SignInButton mode="modal" afterSignInUrl="/">
-                        <Button variant="outline">Log In</Button>
+                        <Button variant="outline" className="w-full">Log In</Button>
                     </SignInButton>
                     <SignUpButton mode="modal" afterSignUpUrl="/">
-                        <Button>Sign Up</Button>
+                        <Button className="w-full">Sign Up</Button>
                     </SignUpButton>
                  </SignedOut>
               </div>
