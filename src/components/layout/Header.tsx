@@ -12,6 +12,9 @@ export function Header() {
         <span className="font-headline text-xl font-bold ml-2">QuickCap</span>
       </Link>
       <nav className="ml-auto hidden md:flex gap-4 sm:gap-6 items-center">
+        <Link href="/" className="text-sm font-medium hover:text-primary transition-colors" prefetch={false}>
+          Home
+        </Link>
         <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors" prefetch={false}>
           About
         </Link>
@@ -34,6 +37,9 @@ export function Header() {
           </SheetTrigger>
           <SheetContent side="right">
             <div className="grid gap-4 p-4">
+              <Link href="/" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
+                Home
+              </Link>
               <Link href="/about" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
                 About
               </Link>
