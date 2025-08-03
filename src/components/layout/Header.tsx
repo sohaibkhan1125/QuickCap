@@ -16,9 +16,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useEffect, useState } from 'react';
 
 export function Header() {
   const [user] = useAuthState(auth);
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -45,32 +52,34 @@ export function Header() {
         </Link>
       </nav>
       <div className="ml-auto md:ml-4 flex gap-2 items-center">
-        {user ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Avatar className="cursor-pointer">
-                <AvatarImage src={user.photoURL || undefined} />
-                <AvatarFallback>{user.email?.[0].toUpperCase()}</AvatarFallback>
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ) : (
-          <>
-            <Button variant="outline" className="hidden md:inline-flex" asChild>
-              <Link href="/login">Log In</Link>
-            </Button>
-            <Button className="hidden md:inline-flex" asChild>
-              <Link href="/signup">Sign Up</Link>
-            </Button>
-          </>
+        {hasMounted && (
+            user ? (
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                <Avatar className="cursor-pointer">
+                    <AvatarImage src={user.photoURL || undefined} />
+                    <AvatarFallback>{user.email?.[0].toUpperCase()}</AvatarFallback>
+                </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+            ) : (
+            <>
+                <Button variant="outline" className="hidden md:inline-flex" asChild>
+                <Link href="/login">Log In</Link>
+                </Button>
+                <Button className="hidden md:inline-flex" asChild>
+                <Link href="/signup">Sign Up</Link>
+                </Button>
+            </>
+            )
         )}
         
         <Sheet>
@@ -95,7 +104,7 @@ export function Header() {
                 Privacy Policy
               </Link>
               <div className="flex flex-col gap-2 mt-4">
-                {!user && (
+                {hasMounted && !user && (
                     <>
                      <Button variant="outline" className="w-full" asChild>
                         <Link href="/login">Log In</Link>
