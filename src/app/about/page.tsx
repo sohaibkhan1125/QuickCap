@@ -1,5 +1,6 @@
 import Image from "next/image";
 import firstImage from "../First Image.png";
+import secondImage from "../Second Image.png";
 
 export default function AboutPage() {
   return (
@@ -38,7 +39,7 @@ export default function AboutPage() {
                 </p>
             </div>
             <div data-ai-hint="technology abstract" className="order-first md:order-last">
-                 <img src="https://placehold.co/600x400.png" alt="Our Technology" className="rounded-lg object-cover" />
+                 <Image src={secondImage} alt="Our Technology" className="rounded-lg object-cover" />
             </div>
         </div>
       </div>
