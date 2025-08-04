@@ -1,3 +1,6 @@
+import Image from "next/image";
+import firstImage from "./First Image.png";
+
 export default function AboutPage() {
   return (
     <div className="py-12 md:py-20 lg:py-24">
@@ -12,7 +15,7 @@ export default function AboutPage() {
         </div>
         <div className="max-w-4xl mx-auto mt-12 md:mt-16 grid gap-8 md:grid-cols-2 lg:gap-12">
             <div data-ai-hint="mission abstract">
-                <img src="https://placehold.co/600x400.png" alt="Our Mission" className="rounded-lg object-cover" />
+                <Image src={firstImage} alt="Our Mission" className="rounded-lg object-cover" />
             </div>
             <div className="flex flex-col justify-center">
                 <h2 className="font-headline text-3xl font-bold">Our Story</h2>
