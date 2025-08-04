@@ -1,6 +1,23 @@
+import type { Metadata } from 'next';
 import Image from "next/image";
 import firstImage from "../First Image.png";
 import secondImage from "../Second Image.png";
+
+export const metadata: Metadata = {
+  title: 'About QuickCap | Our Mission to Make Video Accessible',
+  description: 'Learn about the story and technology behind QuickCap. Discover our mission to make video content more accessible and engaging for everyone, everywhere with AI-powered captions.',
+  keywords: [
+    'about QuickCap',
+    'video accessibility mission',
+    'AI captioning technology',
+    'our story',
+    'video for deaf and hard-of-hearing',
+    'inclusive video content',
+    'QuickCap team',
+    'about us',
+    'subtitle technology'
+  ],
+};
 
 export default function AboutPage() {
   return (
