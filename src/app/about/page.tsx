@@ -1,5 +1,5 @@
 import Image from "next/image";
-import firstImage from "./First Image.png";
+import firstImage from "../First Image.png";
 
 export default function AboutPage() {
   return (
