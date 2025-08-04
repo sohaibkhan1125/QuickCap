@@ -37,6 +37,22 @@ const HeroSection = ({ onFileSelect }: { onFileSelect: (file: File) => void }) =
       onFileSelect(e.target.files[0]);
     }
   };
+  
+  const subtitles = [
+    "Upload your video and let our AI generate accurate subtitles in seconds.",
+    "Break barriers and make your content accessible to a global audience.",
+    "Boost your video's reach with SEO-friendly, searchable transcripts.",
+  ];
+  const [currentSubtitle, setCurrentSubtitle] = useState(0);
+  const [animationKey, setAnimationKey] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSubtitle((prev) => (prev + 1) % subtitles.length);
+      setAnimationKey(prev => prev + 1); // Reset animation
+    }, 4000); // 4 seconds per line
+    return () => clearInterval(interval);
+  }, [subtitles.length]);
 
   return (
     <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 text-center relative overflow-hidden">
@@ -49,8 +65,10 @@ const HeroSection = ({ onFileSelect }: { onFileSelect: (file: File) => void }) =
           <h1 className="font-headline tracking-tighter text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
             Instant Video Captions
           </h1>
-          <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-            Upload your video and let our AI generate accurate, time-coded subtitles in seconds. Break barriers and make your content accessible to all.
+          <p key={animationKey} className="mx-auto max-w-[700px] text-muted-foreground md:text-xl h-16 md:h-12 overflow-hidden">
+             <span className="inline-block animate-typewriter-erase whitespace-nowrap overflow-hidden pr-1">
+                {subtitles[currentSubtitle]}
+             </span>
           </p>
           <div className="space-x-4">
             <Button size="lg" asChild className="relative overflow-hidden">
