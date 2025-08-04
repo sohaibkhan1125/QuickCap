@@ -13,16 +13,17 @@ export default function ContactPage() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const sendEmail = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!form.current) return;
-    
-    // Simple validation
-    const formData = new FormData(form.current);
-    const name = formData.get('user_name');
-    const email = formData.get('user_email');
-    const message = formData.get('message');
+    if (!form.current) {
+        return;
+    }
+
+    // Basic form validation
+    const name = (form.current.elements.namedItem('user_name') as HTMLInputElement)?.value;
+    const email = (form.current.elements.namedItem('user_email') as HTMLInputElement)?.value;
+    const message = (form.current.elements.namedItem('message') as HTMLTextAreaElement)?.value;
 
     if (!name || !email || !message) {
         toast({
@@ -72,7 +73,7 @@ export default function ContactPage() {
                 <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tighter">Get in Touch</h1>
                 <p className="text-lg text-muted-foreground mt-2">Have a question or feedback? We'd love to hear from you.</p>
                 </div>
-                <form ref={form} className="space-y-6">
+                <form ref={form} onSubmit={sendEmail} className="space-y-6">
                  <div className="space-y-2">
                     <Label htmlFor="name">Name</Label>
                     <Input id="name" name="user_name" placeholder="John Doe" required />
@@ -85,7 +86,7 @@ export default function ContactPage() {
                     <Label htmlFor="message">Message</Label>
                     <Textarea id="message" name="message" placeholder="Your message..." className="min-h-[150px]" required />
                 </div>
-                <Button type="submit" className="w-full" disabled={isSubmitting} onClick={sendEmail}>
+                <Button type="submit" className="w-full" disabled={isSubmitting}>
                     {isSubmitting ? 'Sending...' : 'Send Message'}
                 </Button>
                 </form>
