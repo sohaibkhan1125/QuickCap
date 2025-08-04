@@ -19,7 +19,7 @@ export default function DisclaimerPage() {
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
           <h1 className="font-headline text-4xl md:text-5xl font-bold">Disclaimer</h1>
-          <p className="text-muted-foreground mt-2">Last updated: July 30, 2024</p>
+          <p className="text-muted-foreground mt-2">Last updated: August 04, 2025</p>
           
           <div className="space-y-8 mt-8 text-foreground/90">
             <div>
