@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo, ChangeEvent, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { UploadCloud, FileVideo, Copy, Download, Twitter, Linkedin, Check, AlertCircle, RefreshCw, Facebook, Languages, Sparkles, PencilRuler } from 'lucide-react';
+import { UploadCloud, FileVideo, Copy, Download, Twitter, Linkedin, Check, AlertCircle, RefreshCw, Facebook, Languages, Sparkles, PencilRuler, ShieldCheck, Zap, Globe } from 'lucide-react';
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select"
 import { languages } from '@/lib/languages';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 type Status = 'idle' | 'processing' | 'success' | 'error';
 type CaptionResult = {
@@ -110,6 +111,105 @@ const HowItWorksSection = () => {
     </section>
   );
 };
+
+const FeaturesSection = () => {
+  const features = [
+    {
+      icon: Check,
+      title: "High Accuracy",
+      description: "Our model provides industry-leading accuracy for clear and reliable transcriptions, capturing every word correctly."
+    },
+    {
+      icon: Globe,
+      title: "Multiple Languages",
+      description: "Translate your captions to over 20 languages with a single click, making your content globally accessible."
+    },
+    {
+      icon: Zap,
+      title: "Fast & Easy",
+      description: "Our streamlined process takes you from upload to captioned video in minutes, not hours. No technical skills required."
+    },
+    {
+      icon: ShieldCheck,
+      title: "Secure & Private",
+      description: "We prioritize your privacy. Your files are processed securely and are never stored on our servers after transcription."
+    }
+  ];
+
+  return (
+    <section className="w-full py-12 md:py-20 lg:py-24 bg-secondary">
+       <div className="container px-4 md:px-6">
+         <div className="flex flex-col items-center text-center space-y-4 mb-12">
+           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">Why Choose QuickCap?</h2>
+           <p className="max-w-[700px] text-muted-foreground md:text-xl">Unlock the full potential of your video content with features designed for creators.</p>
+         </div>
+         <div className="mx-auto grid max-w-5xl items-center gap-6 lg:grid-cols-2 lg:gap-12">
+            {features.map((feature, index) => (
+                <div key={index} className="flex items-start gap-4">
+                    <div className="bg-primary/10 p-3 rounded-full">
+                        <feature.icon className="h-6 w-6 text-primary" />
+                    </div>
+                    <div className="grid gap-1">
+                        <h3 className="text-xl font-bold">{feature.title}</h3>
+                        <p className="text-muted-foreground">{feature.description}</p>
+                    </div>
+                </div>
+            ))}
+         </div>
+       </div>
+    </section>
+  )
+};
+
+const FAQSection = () => {
+    const faqs = [
+        {
+            question: "How accurate are the generated captions?",
+            answer: "Our AI captioning service uses a state-of-the-art speech recognition model to achieve over 95% accuracy in ideal audio conditions. Accuracy can vary depending on audio quality, background noise, and speaker accents."
+        },
+        {
+            question: "What video formats can I upload?",
+            answer: "We support a wide range of video formats, including MP4, MOV, AVI, and WebM. If you have a different format, feel free to try uploading it, as our system can handle most common video codecs."
+        },
+        {
+            question: "How long does it take to generate captions?",
+            answer: "The time it takes to generate captions depends on the length of your video. For a typical video, the process is usually completed in just a few minutes. You'll see a progress bar indicating the status."
+        },
+        {
+            question: "Can I edit the captions after they are generated?",
+            answer: "Yes! After the captions are generated, you can easily edit the text directly in the SRT or TXT editor on the results page before downloading. This allows you to make any necessary corrections or adjustments."
+        },
+        {
+            question: "Are my video files and data secure?",
+            answer: "Absolutely. We take your privacy and data security very seriously. Your video files are only used for the purpose of generating captions and are automatically deleted from our servers after the process is complete. We do not store your videos."
+        }
+    ];
+
+    return (
+        <section className="w-full py-12 md:py-20 lg:py-24 bg-background">
+            <div className="container px-4 md:px-6">
+                <div className="flex flex-col items-center text-center space-y-4 mb-12">
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">Frequently Asked Questions</h2>
+                    <p className="max-w-[700px] text-muted-foreground md:text-xl">Have questions? We've got answers. Here are some common things our users ask.</p>
+                </div>
+                <div className="mx-auto max-w-3xl w-full">
+                    <Accordion type="single" collapsible className="w-full">
+                        {faqs.map((faq, index) => (
+                             <AccordionItem key={index} value={`item-${index}`}>
+                                <AccordionTrigger className="text-lg font-medium text-left">{faq.question}</AccordionTrigger>
+                                <AccordionContent className="text-muted-foreground text-base">
+                                    {faq.answer}
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
+                </div>
+            </div>
+        </section>
+    );
+};
+
+
 
 const ProcessingView = ({ progress, fileName }: { progress: number; fileName: string }) => {
   const statusText = useMemo(() => {
@@ -383,6 +483,8 @@ export function HomePageClient() {
         <>
           <HeroSection onFileSelect={handleFileSelect} />
           <HowItWorksSection />
+          <FeaturesSection />
+          <FAQSection />
         </>
       )}
       {status === 'processing' && <ProcessingView progress={progress} fileName={fileName} />}
