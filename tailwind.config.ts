@@ -104,11 +104,9 @@ export default {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'hero-gradient': 'hero-gradient 15s ease infinite',
         'fade-in': 'fade-in 0.5s ease-out forwards',
-        'typewriter-erase': 'typewriter-erase 5s steps(40) infinite',
+        'typewriter-erase': 'typewriter-erase 5s steps(75) infinite',
       },
     },
   },
   plugins: [require('tailwindcss-animate')],
 } satisfies Config;
-
-    
