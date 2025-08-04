@@ -303,31 +303,36 @@ export function HomePageClient() {
   const [fileName, setFileName] = useState('');
 
   useEffect(() => {
+    let progressInterval: NodeJS.Timeout;
+
     if (status === 'processing') {
-      // Custom progress simulation
       let currentProgress = 0;
       setProgress(currentProgress);
 
+      // Simulate initial progress quickly
       const timers = [
-        setTimeout(() => setProgress(15), 500), // Initial delay
-        setTimeout(() => setProgress(45), 2000), // Uploading/analyzing
-        setTimeout(() => setProgress(85), 8000), // Caption generation (longer step)
+        setTimeout(() => setProgress(15), 500),
+        setTimeout(() => setProgress(45), 2000),
+        setTimeout(() => setProgress(85), 8000),
       ];
-
-      // Indefinite progress after reaching 85%
-      const finalProgressInterval = setInterval(() => {
-        setProgress(p => {
-          if (p >= 95) {
-            clearInterval(finalProgressInterval);
-            return p;
-          }
-          return p + 1;
-        });
-      }, 1000);
+      
+      // After 10 seconds, start a slower, indefinite progress simulation
+      const finalProgressTimer = setTimeout(() => {
+        progressInterval = setInterval(() => {
+          setProgress(p => {
+            if (p >= 95) {
+              // It will hang at 95% and pulse until the process is truly complete
+              return p;
+            }
+            return p + 1;
+          });
+        }, 1500); 
+      }, 10000);
 
       return () => {
         timers.forEach(clearTimeout);
-        clearInterval(finalProgressInterval);
+        clearTimeout(finalProgressTimer);
+        clearInterval(progressInterval);
       };
     }
   }, [status]);
@@ -373,7 +378,7 @@ export function HomePageClient() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center flex-1">
+    <div className="flex flex-col items-center justify-center flex-1 py-12">
       {status === 'idle' && (
         <>
           <HeroSection onFileSelect={handleFileSelect} />
