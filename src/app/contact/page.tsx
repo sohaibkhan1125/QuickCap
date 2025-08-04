@@ -13,10 +13,27 @@ export default function ContactPage() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const sendEmail = (e: React.FormEvent) => {
+  const sendEmail = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     if (!form.current) return;
+    
+    // Simple validation
+    const formData = new FormData(form.current);
+    const name = formData.get('user_name');
+    const email = formData.get('user_email');
+    const message = formData.get('message');
+
+    if (!name || !email || !message) {
+        toast({
+            title: "Missing fields",
+            description: "Please fill out all required fields.",
+            variant: "destructive",
+        });
+        return;
+    }
+
+
     setIsSubmitting(true);
 
     emailjs.sendForm(
@@ -38,7 +55,7 @@ export default function ContactPage() {
         console.error("Error:", error.text);
         toast({
             title: "Uh oh! Something went wrong.",
-            description: "There was a problem with your request. Please try again.",
+            description: "There was a problem with your request. This can sometimes be a configuration issue. Please try again later.",
             variant: "destructive",
         })
       }
@@ -55,7 +72,7 @@ export default function ContactPage() {
                 <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tighter">Get in Touch</h1>
                 <p className="text-lg text-muted-foreground mt-2">Have a question or feedback? We'd love to hear from you.</p>
                 </div>
-                <form ref={form} onSubmit={sendEmail} className="space-y-6">
+                <form ref={form} className="space-y-6">
                  <div className="space-y-2">
                     <Label htmlFor="name">Name</Label>
                     <Input id="name" name="user_name" placeholder="John Doe" required />
@@ -68,7 +85,7 @@ export default function ContactPage() {
                     <Label htmlFor="message">Message</Label>
                     <Textarea id="message" name="message" placeholder="Your message..." className="min-h-[150px]" required />
                 </div>
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                <Button type="submit" className="w-full" disabled={isSubmitting} onClick={sendEmail}>
                     {isSubmitting ? 'Sending...' : 'Send Message'}
                 </Button>
                 </form>
