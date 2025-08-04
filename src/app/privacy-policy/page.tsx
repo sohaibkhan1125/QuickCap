@@ -1,3 +1,19 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Privacy Policy | QuickCap',
+    description: "Understand how QuickCap handles your data. Our privacy policy details the information we collect, how it's used, and the measures we take to protect your video files and personal information.",
+    keywords: [
+        'QuickCap privacy policy',
+        'data privacy',
+        'video data security',
+        'user information',
+        'captioning service privacy',
+        'how we use your data',
+        'is QuickCap safe',
+    ],
+};
+
 export default function PrivacyPolicyPage() {
   return (
     <div className="py-12 md:py-20 lg:py-24">
