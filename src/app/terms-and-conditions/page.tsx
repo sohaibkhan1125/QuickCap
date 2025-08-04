@@ -1,3 +1,19 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Terms and Conditions | QuickCap',
+    description: "Read the terms and conditions for using QuickCap. This page outlines your rights and responsibilities when using our AI video captioning service. Please review it carefully.",
+    keywords: [
+        'QuickCap terms and conditions',
+        'terms of service',
+        'user agreement',
+        'legal policy',
+        'service rules',
+        'video captioning terms',
+        'content rights',
+    ],
+};
+
 export default function TermsAndConditionsPage() {
   return (
     <div className="py-12 md:py-20 lg:py-24">
