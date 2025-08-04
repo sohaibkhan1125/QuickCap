@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { WavesIcon, Menu, LogOut } from 'lucide-react';
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from "@/components/ui/sheet";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
@@ -90,6 +90,17 @@ export function Header() {
             </Button>
           </SheetTrigger>
           <SheetContent side="right">
+            <SheetHeader>
+                <SheetTitle>
+                    <Link href="/" className="flex items-center justify-center" prefetch={false}>
+                        <WavesIcon className="h-6 w-6 text-primary" />
+                        <span className="font-headline text-xl font-bold ml-2">QuickCap</span>
+                    </Link>
+                </SheetTitle>
+                <SheetDescription className="sr-only">
+                    Mobile navigation menu
+                </SheetDescription>
+            </SheetHeader>
             <div className="grid gap-4 p-4">
               <Link href="/" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
                 Home
