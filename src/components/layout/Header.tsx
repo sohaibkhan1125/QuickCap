@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { WavesIcon, Menu, LogOut } from 'lucide-react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from "@/components/ui/sheet";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
@@ -46,9 +46,6 @@ export function Header() {
         </Link>
         <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors" prefetch={false}>
           Contact
-        </Link>
-        <Link href="/privacy-policy" className="text-sm font-medium hover:text-primary transition-colors" prefetch={false}>
-          Privacy Policy
         </Link>
       </nav>
       <div className="ml-auto md:ml-4 flex gap-2 items-center">
@@ -111,9 +108,14 @@ export function Header() {
               <Link href="/contact" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
                 Contact
               </Link>
-              <Link href="/privacy-policy" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
-                Privacy Policy
-              </Link>
+              <div className="border-t pt-4 mt-2 flex flex-col gap-2">
+                 <Link href="/terms-and-conditions" className="text-base font-medium text-muted-foreground hover:text-primary transition-colors" prefetch={false}>
+                    Terms & Conditions
+                </Link>
+                 <Link href="/privacy-policy" className="text-base font-medium text-muted-foreground hover:text-primary transition-colors" prefetch={false}>
+                    Privacy Policy
+                </Link>
+              </div>
               <div className="flex flex-col gap-2 mt-4">
                 {hasMounted && !user && (
                     <>
