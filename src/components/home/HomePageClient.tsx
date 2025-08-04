@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo, ChangeEvent, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { UploadCloud, FileVideo, Copy, Download, Twitter, Linkedin, Check, AlertCircle, RefreshCw, Facebook, Languages } from 'lucide-react';
+import { UploadCloud, FileVideo, Copy, Download, Twitter, Linkedin, Check, AlertCircle, RefreshCw, Facebook, Languages, Sparkles, PencilRuler } from 'lucide-react';
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -61,6 +61,50 @@ const HeroSection = ({ onFileSelect }: { onFileSelect: (file: File) => void }) =
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">Supports MP4, MOV, and AVI files.</p>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const HowItWorksSection = () => {
+  const steps = [
+    {
+      icon: UploadCloud,
+      title: "Upload Your Video",
+      description: "Simply click the upload button and select any video file from your device. We support all major formats like MP4, MOV, and AVI."
+    },
+    {
+      icon: Sparkles,
+      title: "AI-Powered Generation",
+      description: "Our advanced AI gets to work, analyzing and transcribing the audio from your video into highly accurate, time-coded captions."
+    },
+    {
+      icon: Download,
+      title: "Translate & Download",
+      description: "Instantly translate your captions into over 20 languages. Edit them directly and download the final result as an SRT or TXT file."
+    }
+  ];
+
+  return (
+    <section className="w-full py-12 md:py-20 lg:py-24 bg-background">
+      <div className="container px-4 md:px-6">
+        <div className="flex flex-col items-center text-center space-y-4 mb-12">
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">How It Works</h2>
+          <p className="max-w-[700px] text-muted-foreground md:text-xl">Get perfect captions in three simple steps.</p>
+        </div>
+        <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3">
+          {steps.map((step, index) => (
+            <div key={index} className="grid gap-4 p-6 rounded-lg border hover:shadow-lg transition-shadow duration-300 animate-fade-in" style={{ animationDelay: `${index * 200}ms`}}>
+              <div className="flex items-center gap-4">
+                <div className="bg-primary/10 p-3 rounded-full">
+                  <step.icon className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold">{step.title}</h3>
+              </div>
+              <p className="text-muted-foreground">{step.description}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -330,7 +374,12 @@ export function HomePageClient() {
 
   return (
     <div className="flex flex-col items-center justify-center flex-1">
-      {status === 'idle' && <HeroSection onFileSelect={handleFileSelect} />}
+      {status === 'idle' && (
+        <>
+          <HeroSection onFileSelect={handleFileSelect} />
+          <HowItWorksSection />
+        </>
+      )}
       {status === 'processing' && <ProcessingView progress={progress} fileName={fileName} />}
       {status === 'success' && result && <SuccessView result={result} onReset={handleReset} videoFileName={fileName} />}
       {status === 'error' && error && <ErrorView error={error} onReset={handleReset} />}
