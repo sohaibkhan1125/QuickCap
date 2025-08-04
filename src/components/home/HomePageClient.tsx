@@ -2,12 +2,11 @@
 
 import { useState, useCallback, useMemo, ChangeEvent, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { UploadCloud, FileVideo, Copy, Download, Twitter, Linkedin, Check, AlertCircle, RefreshCw, Facebook, Wand2 } from 'lucide-react';
+import { UploadCloud, FileVideo, Copy, Download, Twitter, Linkedin, Check, AlertCircle, RefreshCw, Facebook } from 'lucide-react';
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { generateCaptionsAction } from '@/app/actions';
-import { enhanceCaptions, EnhanceCaptionsInput } from '@/ai/flows/enhance-captions-flow';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from '@/components/ui/badge';
@@ -89,7 +88,6 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
     const { toast } = useToast();
     const [srtCaptions, setSrtCaptions] = useState(result.srt);
     const [txtCaptions, setTxtCaptions] = useState(result.txt);
-    const [isEnhancing, setIsEnhancing] = useState(false);
 
     const handleCopy = (text: string, format: string) => {
         navigator.clipboard.writeText(text);
@@ -110,35 +108,6 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     };
-
-    const handleEnhanceCaptions = async () => {
-        setIsEnhancing(true);
-        try {
-            const currentTab = document.querySelector('[data-state="active"]')?.getAttribute('data-value') || 'srt';
-            const captionsToEnhance = currentTab === 'srt' ? srtCaptions : txtCaptions;
-
-            const { enhancedCaptions } = await enhanceCaptions({ captions: captionsToEnhance });
-
-            if (currentTab === 'srt') {
-                setSrtCaptions(enhancedCaptions);
-            } else {
-                setTxtCaptions(enhancedCaptions);
-            }
-            toast({
-                title: "Captions Enhanced!",
-                description: "The AI has improved your captions.",
-            });
-        } catch (error) {
-            toast({
-                title: "Enhancement Failed",
-                description: "Could not enhance captions. Please try again.",
-                variant: "destructive",
-            });
-        } finally {
-            setIsEnhancing(false);
-        }
-    };
-
 
     return (
         <div className="w-full max-w-3xl px-4 py-12">
@@ -172,7 +141,7 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
                             </div>
                         </TabsContent>
                         <TabsContent value="txt">
-                            <Label htmlFor="txt-editor" className="sr-only">TXT Captions</Label>
+                             <Label htmlFor="txt-editor" className="sr-only">TXT Captions</Label>
                             <Textarea id="txt-editor" value={txtCaptions} onChange={(e) => setTxtCaptions(e.target.value)} className="mt-2 h-64 text-sm" />
                             <div className="flex gap-2 mt-2">
                                 <Button onClick={() => handleCopy(txtCaptions, "TXT")} variant="outline" size="sm"><Copy className="mr-2 h-4 w-4" />Copy</Button>
@@ -180,12 +149,6 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
                             </div>
                         </TabsContent>
                     </Tabs>
-                     <div className="mt-4 flex justify-end">
-                        <Button onClick={handleEnhanceCaptions} disabled={isEnhancing}>
-                            <Wand2 className="mr-2 h-4 w-4" />
-                            {isEnhancing ? 'Enhancing...' : 'Enhance with AI'}
-                        </Button>
-                    </div>
                 </CardContent>
                 <CardFooter className="flex-col sm:flex-row gap-4 items-center justify-between">
                      <Button onClick={onReset}><RefreshCw className="mr-2 h-4 w-4" />Generate Another</Button>
@@ -231,8 +194,6 @@ export function HomePageClient() {
   const [result, setResult] = useState<CaptionResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [fileName, setFileName] = useState('');
-
-  const { toast } = useToast();
 
   useEffect(() => {
     if (status === 'processing') {
