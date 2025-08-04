@@ -56,16 +56,8 @@ export async function generateCaptionsAction(input: AutoCaptionInput) {
   }
 }
 
-export const TranslateInputSchema = z.object({
-  text: z.string().describe('The text to be translated.'),
-  targetLanguage: z.string().describe('The language to translate the text into.'),
-});
-
 export async function translateCaptionsAction(input: TranslateInput) {
     try {
-        // You can still validate here if needed, but the type is already enforced.
-        // TranslateInputSchema.parse(input); 
-
         const result = await translateText(input);
         return {
             success: true,
