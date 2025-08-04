@@ -94,9 +94,9 @@ export default {
             '0%': { opacity: '0', transform: 'translateY(10px)' },
             '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        'typewriter-erase': {
-          '0%, 100%': { width: '0%' },
-          '20%, 80%': { width: '100%' },
+        'fade-in-out': {
+          '0%, 100%': { opacity: '0' },
+          '10%, 90%': { opacity: '1' },
         },
       },
       animation: {
@@ -104,7 +104,7 @@ export default {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'hero-gradient': 'hero-gradient 15s ease infinite',
         'fade-in': 'fade-in 0.5s ease-out forwards',
-        'typewriter-erase': 'typewriter-erase 5s steps(75) infinite',
+        'fade-in-out': 'fade-in-out 5s ease-in-out infinite',
       },
     },
   },

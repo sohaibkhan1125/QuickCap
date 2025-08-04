@@ -44,12 +44,10 @@ const HeroSection = ({ onFileSelect }: { onFileSelect: (file: File) => void }) =
     "Boost your video's reach with SEO-friendly, searchable transcripts.",
   ];
   const [currentSubtitle, setCurrentSubtitle] = useState(0);
-  const [animationKey, setAnimationKey] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSubtitle((prev) => (prev + 1) % subtitles.length);
-      setAnimationKey(prev => prev + 1); // Reset animation
     }, 5000); // 5 seconds per line
     return () => clearInterval(interval);
   }, [subtitles.length]);
@@ -65,11 +63,11 @@ const HeroSection = ({ onFileSelect }: { onFileSelect: (file: File) => void }) =
           <h1 className="font-headline tracking-tighter text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
             Instant Video Captions
           </h1>
-          <p key={animationKey} className="mx-auto max-w-[700px] text-muted-foreground md:text-xl h-16 md:h-12 overflow-hidden">
-             <span className="inline-block animate-typewriter-erase whitespace-nowrap overflow-hidden pr-1">
-                {subtitles[currentSubtitle]}
-             </span>
-          </p>
+           <div className="mx-auto max-w-[700px] text-muted-foreground text-lg md:text-xl h-24 md:h-12 flex items-center justify-center">
+              <p key={currentSubtitle} className="animate-fade-in-out">
+                  {subtitles[currentSubtitle]}
+              </p>
+           </div>
           <div className="space-x-4">
             <Button size="lg" asChild className="relative overflow-hidden">
                 <label htmlFor="video-upload" className="cursor-pointer">
@@ -511,5 +509,3 @@ export function HomePageClient() {
     </div>
   );
 }
-
-    
