@@ -24,11 +24,7 @@ export default function Icon() {
           borderRadius: '6px',
         }}
       >
-        <WavesIcon
-            style={{
-                color: 'hsl(222 100% 68%)',
-            }}
-        />
+        <WavesIcon color='hsl(222 100% 68%)' />
       </div>
     ),
     {
