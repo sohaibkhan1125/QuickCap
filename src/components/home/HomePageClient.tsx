@@ -56,7 +56,7 @@ const HeroSection = ({ onFileSelect }: { onFileSelect: (file: File) => void }) =
                 <label htmlFor="video-upload" className="cursor-pointer">
                     <UploadCloud className="mr-2 h-5 w-5" />
                     Upload Your Video Now
-                    <input id="video-upload" type="file" className="sr-only" accept="video/mp4,video/quicktime,video/x-msvideo" onChange={handleFileChange} />
+                    <input id="video-upload" type="file" className="sr-only" accept="video/mp4,video/quicktime,video/x-msvideo,video/avi" onChange={handleFileChange} />
                 </label>
             </Button>
           </div>
@@ -96,6 +96,7 @@ const ProcessingView = ({ progress, fileName }: { progress: number; fileName: st
 
 const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult; onReset: () => void; videoFileName: string }) => {
     const { toast } = useToast();
+    const [currentCaptions, setCurrentCaptions] = useState(result.captions);
     const [srtCaptions, setSrtCaptions] = useState(result.srt);
     const [txtCaptions, setTxtCaptions] = useState(result.txt);
     const [isTranslating, setIsTranslating] = useState(false);
@@ -109,7 +110,7 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
     };
 
     const handleDownload = (text: string, format: 'srt' | 'txt') => {
-        const blob = new Blob([text], { type: 'text/plain' });
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -120,23 +121,25 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
         URL.revokeObjectURL(url);
     };
 
-    const handleLanguageChange = async (language: string) => {
-        if (language === 'original') {
+    const handleLanguageChange = async (languageName: string) => {
+        if (languageName === 'original') {
             setSrtCaptions(result.srt);
             setTxtCaptions(result.txt);
+            setCurrentCaptions(result.captions);
             return;
         }
 
         setIsTranslating(true);
-        const translationResult = await translateCaptionsAction({ text: result.captions, targetLanguage: language });
+        const translationResult = await translateCaptionsAction({ text: result.captions, targetLanguage: languageName });
         setIsTranslating(false);
 
         if (translationResult.success && translationResult.data) {
             setSrtCaptions(translationResult.data.srt);
             setTxtCaptions(translationResult.data.txt);
+            setCurrentCaptions(translationResult.data.captions);
             toast({
                 title: "Translation Successful!",
-                description: `Captions have been translated to ${language}.`,
+                description: `Captions have been translated to ${languageName}.`,
             })
         } else {
             toast({

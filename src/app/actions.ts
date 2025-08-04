@@ -2,6 +2,7 @@
 
 import { autoCaption, AutoCaptionInput } from '@/ai/flows/auto-caption-flow';
 import { translateText, TranslateInput } from '@/ai/flows/translate-flow';
+import { z } from 'zod';
 
 
 function srtTimestamp(seconds: number) {
@@ -17,7 +18,8 @@ function toSrt(captions: string): string {
     let startTime = 0;
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        const duration = Math.max(2, line.length / 10); // Simple duration heuristic
+        // Simple duration heuristic: 2 seconds base + 0.1s per character
+        const duration = 2 + (line.length / 10);
         const endTime = startTime + duration;
         srt += `${i + 1}\n`;
         srt += `${srtTimestamp(startTime)} --> ${srtTimestamp(endTime)}\n`;
@@ -54,13 +56,21 @@ export async function generateCaptionsAction(input: AutoCaptionInput) {
   }
 }
 
+export const TranslateInputSchema = z.object({
+  text: z.string().describe('The text to be translated.'),
+  targetLanguage: z.string().describe('The language to translate the text into.'),
+});
 
 export async function translateCaptionsAction(input: TranslateInput) {
     try {
+        // You can still validate here if needed, but the type is already enforced.
+        // TranslateInputSchema.parse(input); 
+
         const result = await translateText(input);
         return {
             success: true,
             data: {
+                captions: result.translatedText,
                 srt: toSrt(result.translatedText),
                 txt: toTxt(result.translatedText),
             }

@@ -7,7 +7,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export const TranslateInputSchema = z.object({
+const TranslateInputSchema = z.object({
   text: z.string().describe('The text to be translated.'),
   targetLanguage: z.string().describe('The language to translate the text into.'),
 });

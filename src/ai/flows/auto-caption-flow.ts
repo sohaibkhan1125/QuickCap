@@ -1,5 +1,3 @@
-'use server';
-
 import { createClient, DeepgramClient } from '@deepgram/sdk';
 import { z } from 'zod';
 
@@ -7,7 +5,7 @@ const AutoCaptionInputSchema = z.object({
   videoDataUri: z
     .string()
     .describe(
-      "A video file, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
+      "A video file, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'"
     ),
 });
 export type AutoCaptionInput = z.infer<typeof AutoCaptionInputSchema>;
