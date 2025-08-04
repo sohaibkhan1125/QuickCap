@@ -50,7 +50,7 @@ const HeroSection = ({ onFileSelect }: { onFileSelect: (file: File) => void }) =
     const interval = setInterval(() => {
       setCurrentSubtitle((prev) => (prev + 1) % subtitles.length);
       setAnimationKey(prev => prev + 1); // Reset animation
-    }, 4000); // 4 seconds per line
+    }, 5000); // 5 seconds per line
     return () => clearInterval(interval);
   }, [subtitles.length]);
 
@@ -511,3 +511,5 @@ export function HomePageClient() {
     </div>
   );
 }
+
+    

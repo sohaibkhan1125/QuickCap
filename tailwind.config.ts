@@ -95,8 +95,8 @@ export default {
             '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         'typewriter-erase': {
-          '0%, 100%': { width: '0' },
-          '50%, 90%': { width: '100%' },
+          '0%, 100%': { width: '0%' },
+          '20%, 80%': { width: '100%' },
         },
       },
       animation: {
@@ -104,9 +104,11 @@ export default {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'hero-gradient': 'hero-gradient 15s ease infinite',
         'fade-in': 'fade-in 0.5s ease-out forwards',
-        'typewriter-erase': 'typewriter-erase 4s steps(40) infinite',
+        'typewriter-erase': 'typewriter-erase 5s steps(40) infinite',
       },
     },
   },
   plugins: [require('tailwindcss-animate')],
 } satisfies Config;
+
+    
