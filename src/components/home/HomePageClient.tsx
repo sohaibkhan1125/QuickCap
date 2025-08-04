@@ -2,20 +2,30 @@
 
 import { useState, useCallback, useMemo, ChangeEvent, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { UploadCloud, FileVideo, Copy, Download, Twitter, Linkedin, Check, AlertCircle, RefreshCw, Facebook } from 'lucide-react';
+import { UploadCloud, FileVideo, Copy, Download, Twitter, Linkedin, Check, AlertCircle, RefreshCw, Facebook, Languages } from 'lucide-react';
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { generateCaptionsAction } from '@/app/actions';
+import { generateCaptionsAction, translateCaptionsAction } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { languages } from '@/lib/languages';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type Status = 'idle' | 'processing' | 'success' | 'error';
 type CaptionResult = {
   language: string;
+  captions: string;
   srt: string;
   txt: string;
 };
@@ -88,7 +98,8 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
     const { toast } = useToast();
     const [srtCaptions, setSrtCaptions] = useState(result.srt);
     const [txtCaptions, setTxtCaptions] = useState(result.txt);
-
+    const [isTranslating, setIsTranslating] = useState(false);
+    
     const handleCopy = (text: string, format: string) => {
         navigator.clipboard.writeText(text);
         toast({
@@ -109,24 +120,72 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
         URL.revokeObjectURL(url);
     };
 
+    const handleLanguageChange = async (language: string) => {
+        if (language === 'original') {
+            setSrtCaptions(result.srt);
+            setTxtCaptions(result.txt);
+            return;
+        }
+
+        setIsTranslating(true);
+        const translationResult = await translateCaptionsAction({ text: result.captions, targetLanguage: language });
+        setIsTranslating(false);
+
+        if (translationResult.success && translationResult.data) {
+            setSrtCaptions(translationResult.data.srt);
+            setTxtCaptions(translationResult.data.txt);
+            toast({
+                title: "Translation Successful!",
+                description: `Captions have been translated to ${language}.`,
+            })
+        } else {
+            toast({
+                title: "Translation Failed",
+                description: translationResult.error,
+                variant: "destructive",
+            });
+        }
+    }
+
     return (
         <div className="w-full max-w-3xl px-4 py-12">
             <Card>
                 <CardHeader>
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                        <div className="mb-4 sm:mb-0">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div className="flex-1">
                             <CardTitle className="flex items-center gap-2">
                                 <Check className="h-8 w-8 text-green-500" />
                                 Captions Generated!
                             </CardTitle>
                         </div>
                         <div className="flex items-center gap-2">
-                            <span className="text-sm text-muted-foreground">Detected Language:</span>
+                             <span className="text-sm text-muted-foreground whitespace-nowrap">Detected Language:</span>
                             <Badge variant="secondary" className="uppercase">{result.language}</Badge>
+                        </div>
+                        <div className="w-full sm:w-auto">
+                            <Select onValueChange={handleLanguageChange} defaultValue="original">
+                                <SelectTrigger className="w-full sm:w-[180px]">
+                                    <Languages className="mr-2 h-4 w-4"/>
+                                    <SelectValue placeholder="Translate..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="original">Original Language</SelectItem>
+                                    {languages.map(lang => (
+                                        <SelectItem key={lang.code} value={lang.name}>{lang.name}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
                 </CardHeader>
                 <CardContent>
+                    { isTranslating ? (
+                        <div className="space-y-4 mt-2">
+                           <Skeleton className="h-8 w-1/3" />
+                           <Skeleton className="h-64 w-full" />
+                           <Skeleton className="h-9 w-48" />
+                        </div>
+                    ) : (
                     <Tabs defaultValue="srt" className="w-full">
                         <TabsList className="grid w-full grid-cols-2">
                             <TabsTrigger value="srt">SRT Format</TabsTrigger>
@@ -149,6 +208,7 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
                             </div>
                         </TabsContent>
                     </Tabs>
+                    )}
                 </CardContent>
                 <CardFooter className="flex-col sm:flex-row gap-4 items-center justify-between">
                      <Button onClick={onReset}><RefreshCw className="mr-2 h-4 w-4" />Generate Another</Button>

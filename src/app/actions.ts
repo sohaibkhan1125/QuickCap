@@ -1,6 +1,8 @@
 'use server';
 
 import { autoCaption, AutoCaptionInput } from '@/ai/flows/auto-caption-flow';
+import { translateText, TranslateInput } from '@/ai/flows/translate-flow';
+
 
 function srtTimestamp(seconds: number) {
     const date = new Date(0);
@@ -38,6 +40,7 @@ export async function generateCaptionsAction(input: AutoCaptionInput) {
       success: true,
       data: {
         language: result.language,
+        captions: result.captions,
         srt: toSrt(result.captions),
         txt: toTxt(result.captions),
       },
@@ -49,4 +52,24 @@ export async function generateCaptionsAction(input: AutoCaptionInput) {
       error: error.message || 'Failed to process the video. The AI model might not support the audio characteristics. Please try a different video.',
     };
   }
+}
+
+
+export async function translateCaptionsAction(input: TranslateInput) {
+    try {
+        const result = await translateText(input);
+        return {
+            success: true,
+            data: {
+                srt: toSrt(result.translatedText),
+                txt: toTxt(result.translatedText),
+            }
+        };
+    } catch (error: any) {
+        console.error('Error translating captions:', error);
+        return {
+            success: false,
+            error: error.message || 'Failed to translate captions.',
+        };
+    }
 }

@@ -1,0 +1,22 @@
+export const languages = [
+  { name: "Arabic", code: "ar" },
+  { name: "Chinese (Simplified)", code: "zh-Hans" },
+  { name: "Chinese (Traditional)", code: "zh-Hant" },
+  { name: "Dutch", code: "nl" },
+  { name: "English", code: "en" },
+  { name: "French", code: "fr" },
+  { name: "German", code: "de" },
+  { name: "Hindi", code: "hi" },
+  { name: "Indonesian", code: "id" },
+  { name: "Italian", code: "it" },
+  { name: "Japanese", code: "ja" },
+  { name: "Korean", code: "ko" },
+  { name: "Polish", code: "pl" },
+  { name: "Portuguese", code: "pt" },
+  { name: "Russian", code: "ru" },
+  { name: "Spanish", code: "es" },
+  { name: "Swedish", code: "sv" },
+  { name: "Turkish", code: "tr" },
+  { name: "Ukrainian", code: "uk" },
+  { name: "Urdu", code: "ur" }
+];
