@@ -56,16 +56,10 @@ export default function ContactPage() {
                 <p className="text-lg text-muted-foreground mt-2">Have a question or feedback? We'd love to hear from you.</p>
                 </div>
                 <form ref={form} onSubmit={sendEmail} className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                    <Label htmlFor="first-name">First Name</Label>
-                    <Input id="first-name" name="user_first_name" placeholder="John" required />
-                    </div>
-                    <div className="space-y-2">
-                    <Label htmlFor="last-name">Last Name</Label>
-                    <Input id="last-name" name="user_last_name" placeholder="Doe" required />
-                    </div>
-                </div>
+                 <div className="space-y-2">
+                    <Label htmlFor="name">Name</Label>
+                    <Input id="name" name="user_name" placeholder="John Doe" required />
+                  </div>
                 <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
                     <Input id="email" name="user_email" type="email" placeholder="john.doe@example.com" required />
