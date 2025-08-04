@@ -14,6 +14,9 @@ export function Footer() {
             <Link href="/privacy-policy" className="text-sm hover:text-primary underline-offset-4 transition-colors" prefetch={false}>
               Privacy Policy
             </Link>
+             <Link href="/disclaimer" className="text-sm hover:text-primary underline-offset-4 transition-colors" prefetch={false}>
+              Disclaimer
+            </Link>
           </nav>
           <div className="flex gap-4">
             <Link href="#" aria-label="Twitter" className="text-muted-foreground hover:text-primary transition-colors">
