@@ -7,6 +7,23 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from '@/hooks/use-toast';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Contact QuickCap | Get in Touch for Support & Inquiries',
+    description: "Have a question, feedback, or need support? Contact the QuickCap team. We're here to help you with all your video captioning needs. Reach out to us today!",
+    keywords: [
+        'contact QuickCap',
+        'QuickCap support',
+        'get in touch',
+        'customer service',
+        'feedback',
+        'help with subtitles',
+        'video captioning help',
+        'contact us',
+        'QuickCap feedback'
+    ],
+};
 
 export default function ContactPage() {
   const form = useRef<HTMLFormElement>(null);
