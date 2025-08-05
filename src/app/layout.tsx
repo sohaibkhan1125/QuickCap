@@ -3,6 +3,7 @@ import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Toaster } from "@/components/ui/toaster";
+import Script from 'next/script'; // ✅ Import Next.js Script component
 
 export const metadata: Metadata = {
   title: 'QuickCap: Instant AI Video Captions & Subtitles | Free & Accurate',
@@ -59,6 +60,21 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+        <meta name="google-site-verification" content="jqFvPXW12GZ8Yh2G4Ut-RNx_-pCvpfSvttXUapUtods" />
+
+        {/* ✅ Google Analytics Script */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-5ZHGQDHDDX"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-5ZHGQDHDDX');
+          `}
+        </Script>
       </head>
       <body className="font-body antialiased">
         <div className="relative flex min-h-screen flex-col">
