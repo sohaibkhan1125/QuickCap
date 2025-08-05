@@ -61,7 +61,7 @@ export default function BlogPostPage({ params }: Props) {
             <Image
                 src={post.image}
                 alt={post.title}
-                layout="fill"
+                fill
                 objectFit="cover"
                 data-ai-hint={post.imageHint}
                 className="bg-muted"
@@ -69,7 +69,9 @@ export default function BlogPostPage({ params }: Props) {
         </div>
         
         {/* Article Content */}
-        {post.content}
+        <div className="prose prose-lg max-w-4xl mx-auto dark:prose-invert prose-headings:font-headline prose-a:text-primary hover:prose-a:text-primary/80 prose-strong:text-foreground">
+          {post.content}
+        </div>
         
       </div>
     </div>
