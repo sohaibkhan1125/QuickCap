@@ -39,7 +39,7 @@ export default function BlogIndexPage() {
                         src={post.image}
                         alt={post.title}
                         layout="fill"
-                        objectFit="cover"
+                        style={{objectFit: 'cover'}}
                         className="bg-muted"
                     />
                 </div>

@@ -62,9 +62,10 @@ export default function BlogPostPage({ params }: Props) {
                     src={post.image}
                     alt={post.title}
                     fill
-                    objectFit="cover"
+                    style={{objectFit: 'cover'}}
                     data-ai-hint={post.imageHint}
                     className="bg-muted"
+                    priority
                 />
             </div>
             
