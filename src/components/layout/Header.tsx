@@ -44,6 +44,9 @@ export function Header() {
         <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors" prefetch={false}>
           About
         </Link>
+        <Link href="/blog" className="text-sm font-medium hover:text-primary transition-colors" prefetch={false}>
+          Blog
+        </Link>
         <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors" prefetch={false}>
           Contact
         </Link>
@@ -104,6 +107,9 @@ export function Header() {
               </Link>
               <Link href="/about" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
                 About
+              </Link>
+              <Link href="/blog" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
+                Blog
               </Link>
               <Link href="/contact" className="text-lg font-medium hover:text-primary transition-colors" prefetch={false}>
                 Contact
