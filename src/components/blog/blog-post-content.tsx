@@ -3,9 +3,9 @@ import { Button } from '@/components/ui/button';
 
 export function BlogPostContent() {
     return (
-        <article>
+        <>
             {/* Introduction */}
-            <h2 id="introduction">Introduction: The Unseen Barrier in a Visual World</h2>
+            <h2>Introduction: The Unseen Barrier in a Visual World</h2>
             <p>
               Have you ever scrolled through social media in a quiet place—the library, a waiting room, late at night—and skipped a video because you couldn't turn the sound on? Or maybe you’ve tried to follow a tutorial where the speaker talks a mile a minute, wishing you could just read what they’re saying. If so, you’ve brushed up against a barrier that, for millions of people, is a daily reality.
             </p>
@@ -17,11 +17,11 @@ export function BlogPostContent() {
             </p>
             
             {/* Main Benefits */}
-            <h2 id="benefits">More Than Just Words: The Transformative Power of AI Captions</h2>
+            <h2>More Than Just Words: The Transformative Power of AI Captions</h2>
             <p>
               So, what does this AI-driven change actually look like? It’s far more than just putting words on a screen. True <strong>AI video accessibility</strong> transforms the user experience in profound ways, creating a richer, more inclusive digital world for all.
             </p>
-            <h3 className="font-headline">Breaking Down Sound Barriers</h3>
+            <h3>Breaking Down Sound Barriers</h3>
             <p>
               The most obvious benefit is for individuals who are Deaf or hard-of-hearing. For this community, captions aren't a convenience; they're the entire experience. Without them, a video is just moving pictures. High-quality, AI-generated captions provide a bridge to understanding, allowing everyone to participate in cultural moments, educational content, and online conversations equally. It’s about moving from exclusion to inclusion.
             </p>
@@ -29,7 +29,7 @@ export function BlogPostContent() {
               However, the benefits extend much further. Think about the modern viewing habit. Over 85% of videos on platforms like Facebook are watched with the sound off. People are consuming content on noisy commutes, in quiet offices, or while multitasking. In these "sound-off" environments, captions are the key to engagement. They grab a viewer's attention and deliver the message effectively, ensuring your content doesn’t get lost in the scroll.
             </p>
             
-            <h3 className="font-headline">Unlocking Global Audiences with Translation</h3>
+            <h3>Unlocking Global Audiences with Translation</h3>
             <p>
               The internet has erased geographical borders, but language barriers remain. What if your cooking tutorial from Paris could be instantly understood by an aspiring chef in Tokyo? This is no longer a fantasy. Modern AI tools don't just transcribe; they can translate those transcriptions into dozens of languages with a single click.
             </p>
@@ -45,7 +45,7 @@ export function BlogPostContent() {
               Suddenly, your content isn't just for your local audience; it's for the world.
             </p>
             
-            <h3 className="font-headline">Boosting SEO and Discoverability</h3>
+            <h3>Boosting SEO and Discoverability</h3>
             <p>
               Here’s a benefit that many creators overlook: search engines can’t watch videos. They rely on text data—titles, descriptions, and, you guessed it, transcripts—to understand what a video is about.
             </p>
@@ -54,7 +54,7 @@ export function BlogPostContent() {
             </p>
             
             {/* How It Works */}
-            <h2 id="how-it-works">Behind the Curtain: How Does AI Actually Do It?</h2>
+            <h2>Behind the Curtain: How Does AI Actually Do It?</h2>
             <p>
               It all feels a bit like magic, doesn't it? You upload a video, and minutes later, a full, accurate transcript appears. But what’s happening behind the scenes? While the technology is complex, the process can be broken down into a few key steps. Let’s demystify the process of automatic captioning.
             </p>
@@ -77,7 +77,7 @@ export function BlogPostContent() {
             </p>
   
             {/* Conclusion */}
-            <h2 id="conclusion">Conclusion: The Future is Accessible, and It's Powered by AI</h2>
+            <h2>Conclusion: The Future is Accessible, and It's Powered by AI</h2>
             <p>
               We are at a pivotal moment in the history of digital content. For too long, accessibility was treated as a compliance checkbox or a niche requirement. Today, we understand it for what it truly is: a fundamental component of good design and a gateway to a larger, more engaged audience.
             </p>
@@ -96,6 +96,6 @@ export function BlogPostContent() {
                   <Link href="/">Try QuickCap for Free</Link>
               </Button>
             </div>
-        </article>
+        </>
     )
 }

@@ -48,31 +48,31 @@ export default function BlogPostPage({ params }: Props) {
   }
 
   return (
-    <div className="py-12 md:py-20 lg:py-24 bg-background">
+    <div className="py-12 md:py-20 lg:py-24 bg-background dark:bg-card">
       <div className="container mx-auto px-4">
+        <article className="max-w-4xl mx-auto">
+            {/* Title */}
+            <h1 className="font-headline text-center text-4xl md:text-5xl font-bold tracking-tighter">
+                {post.title}
+            </h1>
 
-        {/* Title */}
-        <h1 className="font-headline text-center text-4xl md:text-5xl font-bold tracking-tighter max-w-4xl mx-auto">
-            {post.title}
-        </h1>
-
-        {/* Featured Image */}
-        <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden my-8 md:my-12">
-            <Image
-                src={post.image}
-                alt={post.title}
-                fill
-                objectFit="cover"
-                data-ai-hint={post.imageHint}
-                className="bg-muted"
-            />
-        </div>
-        
-        {/* Article Content */}
-        <div className="prose prose-lg max-w-4xl mx-auto dark:prose-invert prose-headings:font-headline prose-a:text-primary hover:prose-a:text-primary/80 prose-strong:text-foreground">
-          {post.content}
-        </div>
-        
+            {/* Featured Image */}
+            <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden my-8 md:my-12">
+                <Image
+                    src={post.image}
+                    alt={post.title}
+                    fill
+                    objectFit="cover"
+                    data-ai-hint={post.imageHint}
+                    className="bg-muted"
+                />
+            </div>
+            
+            {/* Article Content */}
+            <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-primary hover:prose-a:text-primary/80 prose-strong:text-foreground">
+              {post.content}
+            </div>
+        </article>
       </div>
     </div>
   );
