@@ -3,7 +3,8 @@ import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Toaster } from "@/components/ui/toaster";
-import Script from 'next/script'; // ✅ Import Next.js Script component
+import Script from 'next/script';
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
   title: 'QuickCap: Instant AI Video Captions & Subtitles | Free & Accurate',
@@ -83,6 +84,7 @@ export default function RootLayout({
             <Footer />
         </div>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
