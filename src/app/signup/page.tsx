@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCreateUserWithEmailAndPassword, useAuthState } from 'react-firebase-hooks/auth';
 import { auth, googleProvider } from '@/lib/firebase';
-import { signInWithPopup } from 'firebase/auth';
+import { signInWithPopup, AuthError } from 'firebase/auth';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -38,7 +38,10 @@ export default function SignupPage() {
         try {
             await signInWithPopup(auth, googleProvider);
         } catch (error: any) {
-            setPopupError(error);
+            // Don't show an error if the user closes the popup
+            if ((error as AuthError).code !== 'auth/popup-closed-by-user') {
+                 setPopupError(error);
+            }
         } finally {
             setPopupLoading(false);
         }
