@@ -3,7 +3,7 @@
 import { autoCaption, AutoCaptionInput } from '@/ai/flows/auto-caption-flow';
 import { translateText, TranslateInput } from '@/ai/flows/translate-flow';
 import { z } from 'zod';
-import { auth } from '@/lib/firebase-admin'; // Using admin SDK
+import { getFirebaseAuth } from '@/lib/firebase-admin';
 import { revalidatePath } from 'next/cache';
 
 function srtTimestamp(seconds: number) {
@@ -94,6 +94,7 @@ export async function updateProfileAction(formData: FormData) {
     const { uid, displayName, photoURL } = result.data;
     
     try {
+        const auth = getFirebaseAuth();
         await auth.updateUser(uid, {
             ...(displayName && { displayName }),
             ...(photoURL && { photoURL }),

@@ -1,21 +1,45 @@
 import admin from 'firebase-admin';
 
-const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY
-  ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY)
-  : undefined;
+let app: admin.app.App;
 
-if (!admin.apps.length) {
-  if (serviceAccount) {
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-      storageBucket: "quickcap-2c243.appspot.com",
-    });
+function initializeFirebaseAdmin() {
+  if (!admin.apps.length) {
+    const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+
+    if (serviceAccountKey) {
+      const serviceAccount = JSON.parse(serviceAccountKey);
+      app = admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        storageBucket: "quickcap-2c243.appspot.com",
+      });
+    } else {
+      console.warn(
+        "Firebase Admin SDK not initialized. Missing FIREBASE_SERVICE_ACCOUNT_KEY. Server-side Firebase features will not work."
+      );
+    }
   } else {
-    console.warn("Firebase Admin SDK not initialized. Missing FIREBASE_SERVICE_ACCOUNT_KEY.");
+    app = admin.app();
   }
 }
 
-const auth = admin.auth();
-const storage = admin.storage();
+initializeFirebaseAdmin();
 
-export { auth, storage };
+function getFirebaseAuth() {
+  if (!app) {
+    throw new Error(
+      "Firebase Admin SDK has not been initialized. Please check your environment variables."
+    );
+  }
+  return app.auth();
+}
+
+function getFirebaseStorage() {
+  if (!app) {
+    throw new Error(
+      "Firebase Admin SDK has not been initialized. Please check your environment variables."
+    );
+  }
+  return app.storage();
+}
+
+export { getFirebaseAuth, getFirebaseStorage };
