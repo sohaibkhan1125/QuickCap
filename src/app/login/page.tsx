@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSignInWithEmailAndPassword, useSignInWithPopup } from 'react-firebase-hooks/auth';
+import { useSignInWithEmailAndPassword, useAuthState } from 'react-firebase-hooks/auth';
 import { auth, googleProvider } from '@/lib/firebase';
+import { signInWithPopup } from 'firebase/auth';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,8 +23,10 @@ const GoogleIcon = () => (
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
-    const [signInWithPopup, popupUser, popupLoading, popupError] = useSignInWithPopup(auth);
+    const [signInWithEmailAndPassword, emailUser, emailLoading, emailError] = useSignInWithEmailAndPassword(auth);
+    const [user, loading] = useAuthState(auth);
+    const [popupError, setPopupError] = useState<Error | null>(null);
+    const [popupLoading, setPopupLoading] = useState(false);
     const router = useRouter();
     const { toast } = useToast();
 
@@ -33,19 +36,27 @@ export default function LoginPage() {
     };
 
     const handleGoogleSignIn = async () => {
-        await signInWithPopup(googleProvider);
+        setPopupLoading(true);
+        setPopupError(null);
+        try {
+            await signInWithPopup(auth, googleProvider);
+        } catch (error: any) {
+            setPopupError(error);
+        } finally {
+            setPopupLoading(false);
+        }
     }
     
     useEffect(() => {
-        if (user || popupUser) {
+        if (user) {
             router.push('/');
         }
-    }, [user, popupUser, router]);
+    }, [user, router]);
 
-    const anyError = error || popupError;
-    const anyLoading = loading || popupLoading;
+    const anyError = emailError || popupError;
+    const anyLoading = emailLoading || popupLoading || loading;
 
-    if (user || popupUser) {
+    if (user) {
         return null; // Or a loading spinner
     }
 
@@ -109,7 +120,7 @@ export default function LoginPage() {
                             />
                         </div>
                         <Button type="submit" className="w-full" disabled={anyLoading}>
-                            {loading ? 'Logging in...' : 'Login'}
+                            {emailLoading ? 'Logging in...' : 'Login'}
                         </Button>
                     </form>
                 </div>
