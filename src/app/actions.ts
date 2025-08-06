@@ -3,7 +3,8 @@
 import { autoCaption, AutoCaptionInput } from '@/ai/flows/auto-caption-flow';
 import { translateText, TranslateInput } from '@/ai/flows/translate-flow';
 import { z } from 'zod';
-
+import { auth } from '@/lib/firebase-admin'; // Using admin SDK
+import { revalidatePath } from 'next/cache';
 
 function srtTimestamp(seconds: number) {
     const date = new Date(0);
@@ -73,5 +74,37 @@ export async function translateCaptionsAction(input: TranslateInput) {
             success: false,
             error: error.message || 'Failed to translate captions.',
         };
+    }
+}
+
+const UpdateProfileSchema = z.object({
+    uid: z.string(),
+    displayName: z.string().optional(),
+    photoURL: z.string().optional(),
+});
+
+export async function updateProfileAction(formData: FormData) {
+    const rawData = Object.fromEntries(formData.entries());
+    const result = UpdateProfileSchema.safeParse(rawData);
+
+    if (!result.success) {
+        return { success: false, error: 'Invalid data provided.' };
+    }
+    
+    const { uid, displayName, photoURL } = result.data;
+    
+    try {
+        await auth.updateUser(uid, {
+            ...(displayName && { displayName }),
+            ...(photoURL && { photoURL }),
+        });
+
+        // Revalidate the profile page to show the new data
+        revalidatePath('/profile');
+        
+        return { success: true };
+    } catch (error: any) {
+        console.error('Error updating profile:', error);
+        return { success: false, error: error.message || 'Failed to update profile.' };
     }
 }
