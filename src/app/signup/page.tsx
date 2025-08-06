@@ -36,7 +36,10 @@ export default function SignupPage() {
         setPopupLoading(true);
         setPopupError(null);
         try {
-            await signInWithPopup(auth, googleProvider);
+            const result = await signInWithPopup(auth, googleProvider);
+            if (result.user) {
+                router.push('/');
+            }
         } catch (error: any) {
             // Don't show an error if the user closes the popup
             if ((error as AuthError).code !== 'auth/popup-closed-by-user') {
@@ -55,6 +58,10 @@ export default function SignupPage() {
 
     const anyError = emailError || popupError;
     const anyLoading = emailLoading || popupLoading || loading;
+
+    if (loading) {
+        return <div className="flex items-center justify-center h-screen"><p>Loading...</p></div>;
+    }
 
     if (user) {
         return null;
@@ -80,7 +87,7 @@ export default function SignupPage() {
 
                     <Button variant="outline" onClick={handleGoogleSignIn} disabled={anyLoading}>
                         <GoogleIcon />
-                        {anyLoading ? 'Signing up...' : 'Sign Up with Google'}
+                        {popupLoading ? 'Signing up...' : 'Sign Up with Google'}
                     </Button>
 
                     <div className="relative">
