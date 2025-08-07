@@ -2,11 +2,11 @@
 
 import { useState, useCallback, useMemo, ChangeEvent, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { UploadCloud, FileVideo, Copy, Download, Twitter, Linkedin, Check, AlertCircle, RefreshCw, Facebook, Languages, Sparkles, PencilRuler, ShieldCheck, Zap, Globe } from 'lucide-react';
+import { UploadCloud, FileVideo, Copy, Download, Twitter, Linkedin, Check, AlertCircle, RefreshCw, Facebook, Languages, Sparkles, PencilRuler, ShieldCheck, Zap, Globe, Volume2, Music4 } from 'lucide-react';
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { generateCaptionsAction, translateCaptionsAction } from '@/app/actions';
+import { generateCaptionsAction, translateCaptionsAction, generateAudioAction } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from '@/components/ui/badge';
@@ -22,6 +22,7 @@ import {
 import { languages } from '@/lib/languages';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Spinner } from '../ui/spinner';
 
 type Status = 'idle' | 'processing' | 'success' | 'error';
 type CaptionResult = {
@@ -260,6 +261,9 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
     const [srtCaptions, setSrtCaptions] = useState(result.srt);
     const [txtCaptions, setTxtCaptions] = useState(result.txt);
     const [isTranslating, setIsTranslating] = useState(false);
+    const [isGeneratingAudio, setIsGeneratingAudio] = useState(false);
+    const [audioDataUri, setAudioDataUri] = useState<string | null>(null);
+
     
     const handleCopy = (text: string, format: string) => {
         navigator.clipboard.writeText(text);
@@ -282,6 +286,7 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
     };
 
     const handleLanguageChange = async (languageName: string) => {
+        setAudioDataUri(null); // Reset audio on language change
         if (languageName === 'original') {
             setSrtCaptions(result.srt);
             setTxtCaptions(result.txt);
@@ -309,6 +314,28 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
             });
         }
     }
+
+    const handleGenerateAudio = async () => {
+        setIsGeneratingAudio(true);
+        setAudioDataUri(null);
+        const audioResult = await generateAudioAction({ text: currentCaptions, voice: 'alloy' });
+        setIsGeneratingAudio(false);
+
+        if (audioResult.success && audioResult.data) {
+            setAudioDataUri(audioResult.data.audioDataUri);
+            toast({
+                title: "Audio Generated!",
+                description: "Your audio is ready to be played.",
+            });
+        } else {
+             toast({
+                title: "Audio Generation Failed",
+                description: audioResult.error,
+                variant: "destructive",
+            });
+        }
+    };
+
 
     return (
         <div className="w-full max-w-3xl px-4 py-12">
@@ -372,6 +399,19 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
                         </TabsContent>
                     </Tabs>
                     )}
+                     <div className="mt-4 space-y-4">
+                        <Button onClick={handleGenerateAudio} disabled={isGeneratingAudio}>
+                            {isGeneratingAudio ? <Spinner className="mr-2" /> : <Music4 className="mr-2 h-4 w-4" />}
+                            {isGeneratingAudio ? 'Generating Audio...' : 'Generate Audio'}
+                        </Button>
+                        {audioDataUri && (
+                             <div className="p-4 bg-muted rounded-lg">
+                                <audio controls src={audioDataUri} className="w-full">
+                                    Your browser does not support the audio element.
+                                </audio>
+                             </div>
+                        )}
+                    </div>
                 </CardContent>
                 <CardFooter className="flex-col sm:flex-row gap-4 items-center justify-between">
                      <Button onClick={onReset}><RefreshCw className="mr-2 h-4 w-4" />Generate Another</Button>

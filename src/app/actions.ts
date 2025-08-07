@@ -2,6 +2,7 @@
 
 import { autoCaption, AutoCaptionInput } from '@/ai/flows/auto-caption-flow';
 import { translateText, TranslateInput } from '@/ai/flows/translate-flow';
+import { generateSpeech, GenerateSpeechInput } from '@/ai/flows/text-to-speech-flow';
 import { z } from 'zod';
 import { getFirebaseAuth } from '@/lib/firebase-admin';
 import { revalidatePath } from 'next/cache';
@@ -76,6 +77,25 @@ export async function translateCaptionsAction(input: TranslateInput) {
         };
     }
 }
+
+export async function generateAudioAction(input: GenerateSpeechInput) {
+    try {
+        const result = await generateSpeech(input);
+        return {
+            success: true,
+            data: {
+                audioDataUri: result.audioDataUri,
+            }
+        };
+    } catch (error: any) {
+        console.error('Error generating audio:', error);
+        return {
+            success: false,
+            error: error.message || 'Failed to generate audio.',
+        };
+    }
+}
+
 
 const UpdateProfileSchema = z.object({
     uid: z.string(),
