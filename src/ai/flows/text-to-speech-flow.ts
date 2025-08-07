@@ -9,7 +9,7 @@ const openai = new OpenAI({
 
 const GenerateSpeechInputSchema = z.object({
   text: z.string().describe('The text to be converted to speech.'),
-  voice: z.enum(['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer']).default('alloy'),
+  voice: z.string().default('alloy'), // Default voice
 });
 export type GenerateSpeechInput = z.infer<typeof GenerateSpeechInputSchema>;
 
@@ -20,18 +20,18 @@ export type GenerateSpeechOutput = {
 export async function generateSpeech(input: GenerateSpeechInput): Promise<GenerateSpeechOutput> {
   try {
     const mp3 = await openai.audio.speech.create({
-      model: 'gpt-4o-mini-tts',
-      voice: input.voice,
+      model: "tts-1",
+      voice: input.voice as any, // Cast as any to match available voices
       input: input.text,
-      response_format: 'mp3',
     });
 
     const buffer = Buffer.from(await mp3.arrayBuffer());
-    const audioDataUri = `data:audio/mp3;base64,${buffer.toString('base64')}`;
+    const audioDataUri = `data:audio/mpeg;base64,${buffer.toString('base64')}`;
 
     return { audioDataUri };
+
   } catch (error) {
     console.error('OpenAI TTS Error:', error);
-    throw new Error('Failed to generate audio from text.');
+    throw new Error('Failed to generate audio from text using OpenAI.');
   }
 }
