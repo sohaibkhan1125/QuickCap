@@ -318,7 +318,7 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
     const handleGenerateAudio = async () => {
         setIsGeneratingAudio(true);
         setAudioDataUri(null);
-        const audioResult = await generateAudioAction({ text: currentCaptions, voice: 'alloy' });
+        const audioResult = await generateAudioAction({ text: currentCaptions, voice: 'JBFqnCBsd6RMkjVDRZzb' });
         setIsGeneratingAudio(false);
 
         if (audioResult.success && audioResult.data) {
