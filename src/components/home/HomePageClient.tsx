@@ -43,6 +43,7 @@ const HeroSection = ({ onFileSelect }: { onFileSelect: (file: File) => void }) =
     "Upload your video and let our AI generate accurate subtitles in seconds.",
     "Break barriers and make your content accessible to a global audience.",
     "Boost your video's reach with SEO-friendly, searchable transcripts.",
+    "Instantly convert your captions to high-quality audio in multiple languages.",
   ];
   const [currentSubtitle, setCurrentSubtitle] = useState(0);
 
@@ -99,8 +100,8 @@ const HowItWorksSection = () => {
     },
     {
       icon: Download,
-      title: "Translate & Download",
-      description: "Instantly translate your captions into over 20 languages. Edit them directly and download the final result as an SRT or TXT file."
+      title: "Translate, Listen & Download",
+      description: "Instantly translate captions, listen to them with our Text-to-Speech feature, and download the final result as SRT or TXT files."
     }
   ];
 
@@ -142,9 +143,14 @@ const FeaturesSection = () => {
       description: "Translate your captions to over 20 languages with a single click, making your content globally accessible."
     },
     {
+      icon: Music4,
+      title: "Text-to-Speech",
+      description: "Convert your captions into lifelike speech in various languages, adding an audio dimension to your content."
+    },
+    {
       icon: Zap,
       title: "Fast & Easy",
-      description: "Our streamlined process takes you from upload to captioned video in minutes, not hours. No technical skills required."
+      description: "Our streamlined process takes you from upload to captioned video in minutes. No technical skills required."
     },
     {
       icon: ShieldCheck,
@@ -189,8 +195,8 @@ const FAQSection = () => {
             answer: "We support a wide range of video formats, including MP4, MOV, AVI, and WebM. If you have a different format, feel free to try uploading it, as our system can handle most common video codecs."
         },
         {
-            question: "How long does it take to generate captions?",
-            answer: "The time it takes to generate captions depends on the length of your video. For a typical video, the process is usually completed in just a few minutes. You'll see a progress bar indicating the status."
+            question: "Can I convert the captions to audio?",
+            answer: "Yes! After generating or translating your captions, you can use our Text-to-Speech feature to convert the text into high-quality audio. You can play it directly on the site and download it as an MP3 file."
         },
         {
             question: "Can I edit the captions after they are generated?",

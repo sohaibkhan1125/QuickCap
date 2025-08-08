@@ -37,6 +37,7 @@ export default function PrivacyPolicyPage() {
               </p>
               <ul className="list-disc list-inside space-y-2 pl-4 mt-2">
                   <li><strong>Video Files:</strong> We temporarily process the video files you upload to generate captions. We do not store your videos after the captioning process is complete.</li>
+                  <li><strong>Caption and Translation Text:</strong> When you use our text-to-speech feature, the generated caption or translated text is sent to our third-party AI service provider to create audio. This text is not stored by us after processing.</li>
                   <li><strong>Usage Data:</strong> We may automatically collect usage data when you access the Service, such as your IP address, browser type, and pages visited.</li>
               </ul>
             </div>
@@ -48,6 +49,7 @@ export default function PrivacyPolicyPage() {
               </p>
               <ul className="list-disc list-inside space-y-2 pl-4 mt-2">
                   <li>Generate captions for your uploaded videos.</li>
+                  <li>Translate captions and generate audio from text.</li>
                   <li>Monitor and analyze usage and trends to improve your experience with the Service.</li>
                   <li>Maintain the security and operation of our Service.</li>
               </ul>
@@ -56,7 +58,7 @@ export default function PrivacyPolicyPage() {
             <div>
               <h2 className="font-headline text-2xl font-bold mt-8 mb-2">4. Disclosure of Your Information</h2>
               <p>
-                We do not sell, trade, or otherwise transfer to outside parties your personally identifiable information. Your video content is processed by our AI service provider for the sole purpose of generating captions and is subject to their privacy policies.
+                We do not sell, trade, or otherwise transfer to outside parties your personally identifiable information. Your video content and text data are processed by our third-party AI service providers for the sole purpose of generating captions and audio. These providers are subject to their own privacy policies.
               </p>
             </div>
             

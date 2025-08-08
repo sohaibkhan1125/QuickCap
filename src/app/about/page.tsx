@@ -49,7 +49,7 @@ export default function AboutPage() {
             <div className="flex flex-col justify-center order-last md:order-first">
                 <h2 className="font-headline text-3xl font-bold">Our Technology</h2>
                 <p className="mt-4 text-muted-foreground">
-                Our AI gets to work, automatically detecting the language and transcribing audio with high accuracy. Our goal is to empower creators, marketers, educators, and individuals to enhance their video content, reach a wider audience, and create a more inclusive viewing experience.
+                Our AI gets to work, automatically detecting the language and transcribing audio with high accuracy. The platform can also translate these captions into multiple languages and even convert them into lifelike speech, further enhancing accessibility. Our goal is to empower creators, marketers, educators, and individuals to enhance their video content, reach a wider audience, and create a more inclusive viewing experience.
                 </p>
                  <p className="mt-4 text-muted-foreground">
                 We believe in the power of technology to break down barriers, and with QuickCap, we're taking a step towards a more accessible future.
