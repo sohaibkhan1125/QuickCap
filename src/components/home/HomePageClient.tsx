@@ -399,16 +399,23 @@ const SuccessView = ({ result, onReset, videoFileName }: { result: CaptionResult
                         </TabsContent>
                     </Tabs>
                     )}
-                     <div className="mt-4 space-y-4">
+                     <div className="mt-6 border-t pt-6 space-y-4">
+                        <h3 className="font-headline text-lg font-semibold">Text-to-Speech</h3>
                         <Button onClick={handleGenerateAudio} disabled={isGeneratingAudio}>
                             {isGeneratingAudio ? <Spinner className="mr-2" /> : <Music4 className="mr-2 h-4 w-4" />}
                             {isGeneratingAudio ? 'Generating Audio...' : 'Generate Audio'}
                         </Button>
                         {audioDataUri && (
-                             <div className="p-4 bg-muted rounded-lg">
+                             <div className="p-4 bg-muted rounded-lg space-y-4">
                                 <audio controls src={audioDataUri} className="w-full">
                                     Your browser does not support the audio element.
                                 </audio>
+                                <Button asChild variant="outline" size="sm">
+                                    <a href={audioDataUri} download="caption_audio.mp3">
+                                        <Download className="mr-2 h-4 w-4" />
+                                        Download Audio
+                                    </a>
+                                </Button>
                              </div>
                         )}
                     </div>
